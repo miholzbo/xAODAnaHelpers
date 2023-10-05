@@ -28,6 +28,7 @@
 #include "xAODMuon/Muon.h"
 #include "AthContainers/ConstDataVector.h"
 #include "xAODCore/ShallowCopy.h"
+#include "AsgTools/CurrentContext.h"
 
 // package include(s):
 #include "xAODAnaHelpers/IsoCloseByCorr.h"
@@ -176,7 +177,8 @@ EL::StatusCode IsoCloseByCorr :: execute ()
   const xAOD::EventInfo* eventInfo(nullptr);
   ANA_CHECK( HelperFunctions::retrieve(eventInfo, m_eventInfoContainerName, m_event, m_store, msg()) );
 
-  if(m_IsoCloseByCorr_tool->getCloseByIsoCorrection((xAOD::ElectronContainer*)inElectrons,
+  if(m_IsoCloseByCorr_tool->getCloseByIsoCorrection(Gaudi::Hive::currentContext(),
+                                                    (xAOD::ElectronContainer*)inElectrons,
                                                     (xAOD::MuonContainer*)inMuons,
                                                     (xAOD::PhotonContainer*)inPhotons).code()  == CP::CorrectionCode::Error) {
     ANA_MSG_ERROR("CloseByIsoCorrection returns Error code");
